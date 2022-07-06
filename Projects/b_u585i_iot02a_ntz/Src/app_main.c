@@ -46,6 +46,11 @@
 
 #include "cli/cli.h"
 
+#include "app_FreeFallDetection.h"
+
+
+#define ISM330DHCX_INT1_Pin GPIO_PIN_11
+
 static lfs_t * pxLfsCtx = NULL;
 
 EventGroupHandle_t xSystemEvents = NULL;
@@ -298,8 +303,11 @@ uint32_t ulGetResetSource( void )
     return ulCsrFlags;
 }
 
+
 int main( void )
 {
+
+
     ulCsrFlags = RCC->CSR;
 
     __HAL_RCC_CLEAR_RESET_FLAGS();
@@ -313,6 +321,9 @@ int main( void )
     vDetermineResetSource();
 
     LogInfo( "HW Init Complete." );
+
+    DoubleTapDetection_Init();
+
 
     xSystemEvents = xEventGroupCreate();
 

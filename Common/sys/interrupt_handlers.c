@@ -28,6 +28,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "hw_defs.h"
+#include "app_FreeFallDetection.h"
+
+#define ISM330DHCX_INT1_Pin GPIO_PIN_11
 
 static GPIOInterruptCallback_t volatile xGpioCallbacks[ 16 ] = { NULL };
 static void * volatile xGpioCallbackContext[ 16 ] = { NULL };
@@ -231,10 +234,11 @@ void HAL_GPIO_EXTI_Falling_Callback( uint16_t usGpioPinMask )
  */
 void HAL_GPIO_EXTI_Rising_Callback( uint16_t usGpioPinMask )
 {
-    uint32_t ulIndex = POSITION_VAL( usGpioPinMask );
 
-    if( xGpioCallbacks[ ulIndex ] != NULL )
-    {
-        ( *( xGpioCallbacks[ ulIndex ] ) )( xGpioCallbackContext[ ulIndex ] );
-    }
+	 uint32_t ulIndex = POSITION_VAL( usGpioPinMask );
+
+	 if( xGpioCallbacks[ ulIndex ] != NULL )
+		 {
+		   ( *( xGpioCallbacks[ ulIndex ] ) )( xGpioCallbackContext[ ulIndex ] );
+		 }
 }
